@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { apiClient } from "../utils/apiClient";
 import { message } from "antd";
 import { usePathContext } from "./usePathContext";
+import { AxiosInstance } from "axios";
 
 type Path = [string, string][];
 
@@ -24,7 +24,7 @@ type PathResponse = {
 
 const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-export default () => {
+export default (apiClient: AxiosInstance) => {
   const { setData } = usePathContext();
   const [params, setParams] = useState<Params>();
   const [isLoading, setIsLoading] = useState<boolean>(false);

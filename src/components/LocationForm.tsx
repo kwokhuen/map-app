@@ -4,6 +4,7 @@ import { FormProps } from "antd/lib/form";
 import styled from "styled-components";
 import useSearchPath from "../hooks/useSearchPath";
 import { usePathContext } from "../hooks/usePathContext";
+import { apiClient } from "../utils/apiClient";
 
 const { Item: FormItem } = Form;
 
@@ -24,7 +25,7 @@ const StyledButton = styled(Button)`
 `;
 
 const LocationForm = React.memo((props: FormProps) => {
-  const { fetch, isLoading } = useSearchPath();
+  const { fetch, isLoading } = useSearchPath(apiClient);
   const { setData } = usePathContext();
 
   const handleSubmit = useCallback(
