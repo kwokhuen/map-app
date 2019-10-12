@@ -14,7 +14,7 @@ const FormWrapper = styled.div`
   min-width: 250px;
   @media (max-width: 768px) {
     width: 100%;
-    height: 30vh;
+    height: 35vh;
     min-width: 0px;
     padding: 12px;
   }

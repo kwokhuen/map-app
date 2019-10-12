@@ -9,7 +9,7 @@ const MapWrapper = styled.div`
   width: 75%;
   @media (max-width: 768px) {
     width: 100%;
-    height: 70vh;
+    height: 65vh;
   }
 `;
 
