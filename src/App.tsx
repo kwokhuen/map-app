@@ -7,6 +7,9 @@ import { usePathContext } from "./hooks/usePathContext";
 
 const FlexContainer = styled.div`
   display: flex;
+  @media (max-width: 768px) {
+    flex-direction: column-reverse;
+  }
 `;
 
 const App: React.FC = () => (

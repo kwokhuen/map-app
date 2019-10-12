@@ -6,7 +6,11 @@ import { transformPath } from "../utils/transformPath";
 
 const MapWrapper = styled.div`
   height: 100vh;
-  width: 100%;
+  width: 75%;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 70vh;
+  }
 `;
 
 const defaultZoom = 11;

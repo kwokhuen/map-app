@@ -9,7 +9,14 @@ const { Item: FormItem } = Form;
 
 const FormWrapper = styled.div`
   padding: 24px;
-  min-width: 350px;
+  width: 25%;
+  min-width: 250px;
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 30vh;
+    min-width: 0px;
+    padding: 12px;
+  }
 `;
 
 const StyledButton = styled(Button)`
