@@ -12,20 +12,28 @@ const FormWrapper = styled.div`
   min-width: 350px;
 `;
 
+const StyledButton = styled(Button)`
+  margin-right: 8px;
+`;
+
 const LocationForm = React.memo((props: FormProps) => {
   const { fetch, isLoading } = useSearchPath();
-  const { data } = usePathContext();
+  const { setData } = usePathContext();
+
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       props.form!.validateFields((err, values) => {
-        if (!err) {
-          fetch(values);
-        }
+        if (!err) fetch(values);
       });
     },
     [props.form, fetch]
   );
+
+  const handleReset = useCallback(() => {
+    props.form!.resetFields();
+    setData(undefined);
+  }, [props.form]);
 
   const getFieldDecorator = props.form!.getFieldDecorator;
   return (
@@ -46,9 +54,12 @@ const LocationForm = React.memo((props: FormProps) => {
           })(<Input allowClear />)}
         </FormItem>
         <FormItem>
-          <Button type="primary" htmlType="submit" loading={isLoading}>
+          <StyledButton type="primary" htmlType="submit" loading={isLoading}>
             Submit
-          </Button>
+          </StyledButton>
+          <StyledButton loading={isLoading} onClick={handleReset}>
+            Reset
+          </StyledButton>
         </FormItem>
       </Form>
     </FormWrapper>
