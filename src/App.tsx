@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 import Map from "./components/Map";
 import styled from "styled-components";
 import LocationForm from "./components/LocationForm";
