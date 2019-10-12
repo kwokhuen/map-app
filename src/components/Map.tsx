@@ -13,31 +13,55 @@ const defaultZoom = 11;
 const defaultCenter = { lat: 22.285978, lng: 114.19149 };
 
 const Map = React.memo(() => {
-  const mapRef = useRef<google.maps.Map>();
   const mapsRef = useRef<typeof google.maps>();
-  const polylineRef = useRef<google.maps.Polyline>();
+  const directionsServiceRef = useRef<google.maps.DirectionsService>();
+  const directionsRendererRef = useRef<google.maps.DirectionsRenderer>();
   const { data } = usePathContext();
 
   const handleGoogleApiLoaded = useCallback(({ map, maps }) => {
-    mapRef.current = map;
     mapsRef.current = maps;
+    directionsServiceRef.current = new maps.DirectionsService();
+    directionsRendererRef.current = new maps.DirectionsRenderer();
+    directionsRendererRef.current!.setMap(map);
   }, []);
 
   useEffect(() => {
-    if (!mapsRef.current || !mapRef.current) return;
-    const path = data && data.path ? transformPath(data.path) : [];
-    if (!polylineRef.current) {
-      polylineRef.current = new mapsRef.current.Polyline({
-        path,
-        geodesic: true,
-        strokeColor: "#0000FF",
-        strokeOpacity: 0.8,
-        strokeWeight: 2
-      });
-      polylineRef.current.setMap(mapRef.current);
+    if (
+      !directionsServiceRef.current ||
+      !directionsRendererRef.current ||
+      !mapsRef.current
+    ) {
       return;
     }
-    polylineRef.current.setPath(path);
+
+    if (!data || !data.path) {
+      directionsRendererRef.current.setDirections({
+        geocoded_waypoints: [],
+        routes: []
+      });
+      return;
+    }
+
+    const path = transformPath(data.path);
+    const origin = path[0];
+    const destination = path[path.length - 1];
+    const waypoints = path.slice(1, path.length - 1).map(latlng => ({
+      location: new mapsRef.current!.LatLng(latlng),
+      stopover: true
+    }));
+
+    directionsServiceRef.current.route(
+      {
+        origin,
+        destination,
+        waypoints,
+        optimizeWaypoints: true,
+        travelMode: mapsRef.current.TravelMode.DRIVING
+      },
+      directions => {
+        directionsRendererRef.current!.setDirections(directions);
+      }
+    );
   }, [data]);
 
   return (
