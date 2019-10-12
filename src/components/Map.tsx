@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, { useRef, useEffect, useCallback } from "react";
 import GoogleMapReact from "google-map-react";
 import styled from "styled-components";
 import { usePathContext } from "../hooks/usePathContext";
