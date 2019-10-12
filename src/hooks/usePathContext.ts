@@ -3,7 +3,7 @@ import createUseContext from "constate";
 
 type Path = [string, string][];
 
-type Data = {
+export type Data = {
   status: "success" | "failure" | "in progress";
   error?: string;
   path?: Path;
