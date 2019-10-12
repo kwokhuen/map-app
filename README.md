@@ -1,5 +1,22 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Getting Started
+
+To get started,
+
+1. go to google cloud platform
+2. create an api key with Maps Javascript API and Directions API
+3. set `REACT_APP_GOOGLE_MAP_API_KEY` to be the api key in `.env` file
+4. set `REACT_APP_API_BASE_URL` to be the base url of the server backend in `.env` file
+
+## Development
+
+Run `yarn` and `yarn start`.
+
+## Production
+
+To create a production build, run `yarn build`.
+
 ## Available Scripts
 
 In the project directory, you can run:
