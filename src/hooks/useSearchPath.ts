@@ -22,6 +22,8 @@ type PathResponse = {
   total_time?: number;
 };
 
+const timeout = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
 export default () => {
   const { setData } = usePathContext();
   const [params, setParams] = useState<Params>();
@@ -36,29 +38,34 @@ export default () => {
     [params]
   );
 
-  const getPath = useCallback(async (token: Token["token"]): Promise<
-    PathResponse
-  > => {
-    const {
-      data,
-      data: { status, error }
-    } = await apiClient.get<PathResponse>(`/route/${token}`);
-    switch (status) {
-      case "success":
-        message.success("Success!");
-        return data;
-      case "failure":
-        message.error(`Sorry. ${error}.`);
-        return data;
-      case "in progress":
-        message.info(
-          "Hang in there! We're trying to retrieve your information."
-        );
-        return await getPath(token);
-      default:
-        return Promise.reject(new Error("Unknown status"));
-    }
-  }, []);
+  const getPath = useCallback(
+    async (
+      token: Token["token"],
+      retryAfterMs = 500
+    ): Promise<PathResponse> => {
+      const {
+        data,
+        data: { status, error }
+      } = await apiClient.get<PathResponse>(`/route/${token}`);
+      switch (status) {
+        case "success":
+          message.success("Success!");
+          return data;
+        case "failure":
+          message.error(`Sorry. ${error}.`);
+          return data;
+        case "in progress":
+          message.info(
+            "Hang in there! We're trying to retrieve your information."
+          );
+          await timeout(retryAfterMs);
+          return await getPath(token, retryAfterMs * 2);
+        default:
+          return Promise.reject(new Error("Unknown status"));
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     const fetchResource = async () => {
