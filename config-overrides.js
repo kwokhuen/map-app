@@ -1,5 +1,6 @@
-const { override, fixBabelImports } = require("customize-cra");
+const { override, fixBabelImports, addWebpackAlias } = require("customize-cra");
 const CompressionPlugin = require("compression-webpack-plugin");
+const path = require("path");
 
 const addCompressionPlugin = config => {
   config.plugins.push(new CompressionPlugin());
@@ -11,6 +12,12 @@ module.exports = override(
     libraryName: "antd",
     libraryDirectory: "es",
     style: "css"
+  }),
+  addWebpackAlias({
+    ["@ant-design/icons/lib/dist$"]: path.resolve(
+      __dirname,
+      "./src/components/Icons.tsx"
+    )
   }),
   addCompressionPlugin
 );
