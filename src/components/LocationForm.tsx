@@ -24,9 +24,14 @@ const StyledButton = styled(Button)`
   margin-right: 8px;
 `;
 
+const SummaryWrapper = styled.div`
+  padding-bottom: 8px;
+  margin-bottom: 24px;
+`;
+
 const LocationForm = React.memo((props: FormProps) => {
   const { fetch, isLoading } = useSearchPath(apiClient);
-  const { setData } = usePathContext();
+  const { setData, data } = usePathContext();
 
   const handleSubmit = useCallback(
     (e: React.FormEvent<HTMLFormElement>) => {
@@ -61,6 +66,12 @@ const LocationForm = React.memo((props: FormProps) => {
             ]
           })(<Input allowClear />)}
         </FormItem>
+        {data && data.total_distance && data.total_time && (
+          <SummaryWrapper>
+            <div>total distance: {data.total_distance}</div>
+            <div>total time: {data.total_time}</div>
+          </SummaryWrapper>
+        )}
         <FormItem>
           <StyledButton type="primary" htmlType="submit" loading={isLoading}>
             Submit
